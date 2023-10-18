@@ -39,7 +39,7 @@ def Config( name, public):
         if public:
             node.routable_control_ip = True
     if params.phystype != "":
-        node.hardware_type = phystype
+        node.hardware_type = params.phystype
     node.disk_image = IMAGE
     # node.addService(RSpec.Install( SETUP, "/tmp"))
     # node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/script.sh"))
