@@ -41,8 +41,8 @@ def Config( name, public):
     if params.phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
-    node.addService(RSpec.Install( SETUP, "/tmp"))
-    node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/script.sh"))
+    # node.addService(RSpec.Install( SETUP, "/tmp"))
+    # node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/script.sh"))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
