@@ -47,8 +47,8 @@ def Config( name, public):
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True)
-Config("resourcemanager", True)
+# Config("namenode", True)
+# Config("resourcemanager", True)
 
 for i in range( params.n ):
     Config("slave" + str( i ), False)
