@@ -48,7 +48,7 @@ def Config( name, public):
     rspec.addResource(node)
 
 Config("namenode", True)
-# Config("resourcemanager", True)
+Config("resourcemanager", True)
 
 for i in range( params.n ):
     Config("slave" + str( i ), False)
