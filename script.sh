@@ -75,3 +75,7 @@ sudo cat >> mapred-site-customize << EOF
   </property>
 EOF
 sudo sed -i '/<configuration>/r mapred-site-customize' mapred-site.xml
+
+sudo sed -i -e 's@^.*export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' hadoop-env.sh
+sudo sed -i -e 's@^.*export HADOOP_HOME.*@export HADOOP_HOME=/users/jason92/local/hadoop-3.3.6@' hadoop-env.sh
+sudo sed -i -e 's@^.*export HADOOP_CONF_DIR@export HADOOP_CONF_DIR@' hadoop-env.sh
