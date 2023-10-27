@@ -4,7 +4,7 @@ sudo apt-get update
 sudo apt-get install -y openjdk-8-jdk
 
 mkdir /users/jason92/local
-sudo mv /tmp/hadoop-3.3.6 /users/jason92/local
+mv /tmp/hadoop-3.3.6 /users/jason92/local
 
 cat >> /users/jason92/.bashrc << EOF
 export HADOOP_HOME=/users/jason92/local/hadoop-3.3.6
@@ -16,15 +16,17 @@ source /users/jason92/.bashrc
 
 cd /users/jason92/local/hadoop-3.3.6/etc/hadoop
 
-sudo cat >> core-site-customize << EOF
+grep -o -E 'slave[0-9]+$' /etc/hosts > workers
+
+cat >> core-site-customize << EOF
   <property>
     <name>fs.defaultFS</name>
     <value>hdfs://namenode:9000</value>
   </property>
 EOF
-sudo sed -i '/<configuration>/r core-site-customize' core-site.xml
+sed -i '/<configuration>/r core-site-customize' core-site.xml
 
-sudo cat >> hdfs-site-customize << EOF
+cat >> hdfs-site-customize << EOF
   <property>
     <name>dfs.namenode.name.dir</name>
     <value>/users/jason92/hadoop/data/namenode</value>
@@ -42,9 +44,9 @@ sudo cat >> hdfs-site-customize << EOF
     <value>127.0.0.1:50070</value>
   </property>
 EOF
-sudo sed -i '/<configuration>/r hdfs-site-customize' hdfs-site.xml
+sed -i '/<configuration>/r hdfs-site-customize' hdfs-site.xml
 
-sudo cat >> yarn-site-customize << EOF
+cat >> yarn-site-customize << EOF
   <property>
     <name>yarn.acl.enable</name>
     <value>0</value>
@@ -62,9 +64,9 @@ sudo cat >> yarn-site-customize << EOF
     <value>127.0.0.1:50070</value>
   </property>
 EOF
-sudo sed -i '/<configuration>/r yarn-site-customize' yarn-site.xml
+sed -i '/<configuration>/r yarn-site-customize' yarn-site.xml
 
-sudo cat >> mapred-site-customize << EOF
+cat >> mapred-site-customize << EOF
   <property>
     <name>mapreduce.framework.name</name>
     <value>yarn</value>
@@ -74,8 +76,8 @@ sudo cat >> mapred-site-customize << EOF
     <value>127.0.0.1:19888</value>
   </property>
 EOF
-sudo sed -i '/<configuration>/r mapred-site-customize' mapred-site.xml
+sed -i '/<configuration>/r mapred-site-customize' mapred-site.xml
 
-sudo sed -i -e 's@^.*export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' hadoop-env.sh
-sudo sed -i -e 's@^.*export HADOOP_HOME.*@export HADOOP_HOME=/users/jason92/local/hadoop-3.3.6@' hadoop-env.sh
-sudo sed -i -e 's@^.*export HADOOP_CONF_DIR@export HADOOP_CONF_DIR@' hadoop-env.sh
+sed -i -e 's@^.*export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' hadoop-env.sh
+sed -i -e 's@^.*export HADOOP_HOME.*@export HADOOP_HOME=/users/jason92/local/hadoop-3.3.6@' hadoop-env.sh
+sed -i -e 's@^.*export HADOOP_CONF_DIR@export HADOOP_CONF_DIR@' hadoop-env.sh
