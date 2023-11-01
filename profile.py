@@ -7,6 +7,9 @@ pc = portal.Context()
 pc.defineParameter( "n", "Number of slave nodes",
 		    portal.ParameterType.INTEGER, 3 )
 
+pc.defineParameter( "m", "Number of client nodes",
+		    portal.ParameterType.INTEGER, 2 )
+
 pc.defineParameter( "raw", "Use physical nodes",
                     portal.ParameterType.BOOLEAN, False )
 
@@ -52,6 +55,9 @@ Config("resourcemanager", True)
 
 for i in range( params.n ):
     Config("slave" + str( i ), False)
+
+for i in range( params.m ):
+    Config("client" + str( i ), False)
 
 from lxml import etree as ET
 
