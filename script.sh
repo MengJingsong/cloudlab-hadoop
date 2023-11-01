@@ -36,10 +36,6 @@ cat >> hdfs-site-customize << EOF
     <value>/users/jason92/hadoop/data/datanode</value>
   </property>
   <property>
-    <name>dfs.replication</name>
-    <value>1</value>
-  </property>
-  <property>
     <name>dfs.namenode.http-address</name>
     <value>127.0.0.1:50070</value>
   </property>
