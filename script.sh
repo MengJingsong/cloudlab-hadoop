@@ -73,7 +73,7 @@ parallel_rm() {
         done
 }
 
-start_time=$(date +%s%N)
+global_start_time=$(date +%s%N)
 case $1 in
         "put")
                 parallel_put $2 $3 $4 $5
@@ -88,6 +88,6 @@ case $1 in
                 echo "invalid argument $1"
                 ;;
 esac
-end_time=$(date +%s%N)
-ms=$(($((end_time - start_time)) / 1000000))
-echo "total time duration: $ms ms"
+global_end_time=$(date +%s%N)
+global_ms=$(($((global_end_time - global_start_time)) / 1000000))
+echo "total time duration: $global_ms ms"
