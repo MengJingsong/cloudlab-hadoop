@@ -19,7 +19,10 @@ pc.defineParameter( "mem", "Memory per VM",
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
                     
-pc.defineParameter( "phystype", "Optional physical node type", portal.ParameterType.STRING, "", 
+pc.defineParameter( "server_phystype", "Optional physical node type for namenode, resourcemanager and datanode", portal.ParameterType.STRING, "", 
+                    longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
+
+pc.defineParameter( "client_phystype", "Optional physical node type for client", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
 params = pc.bindParameters()
@@ -33,7 +36,7 @@ lan = RSpec.LAN()
 lan.bandwidth = params.linkSpeed
 rspec.addResource( lan )
 
-def Config( name, public):
+def Config( name, public, phystype):
     if params.raw:
         node = RSpec.RawPC( name )
     else:
@@ -41,8 +44,8 @@ def Config( name, public):
         node.ram = params.mem
         if public:
             node.routable_control_ip = True
-    if params.phystype != "":
-        node.hardware_type = params.phystype
+    if phystype != "":
+        node.hardware_type = phystype
     node.disk_image = IMAGE
     node.addService(RSpec.Install( SETUP, "/tmp"))
     node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh"))
@@ -50,14 +53,14 @@ def Config( name, public):
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True)
-Config("resourcemanager", True)
+Config("namenode", True, server_phystype)
+Config("resourcemanager", True, server_phystype)
 
 for i in range( params.n ):
-    Config("slave" + str( i ), False)
+    Config("slave" + str( i ), False, server_phystype)
 
 for i in range( params.m ):
-    Config("client" + str( i ), False)
+    Config("client" + str( i ), False, client_phystype)
 
 from lxml import etree as ET
 
