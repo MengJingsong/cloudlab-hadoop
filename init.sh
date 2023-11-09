@@ -80,3 +80,5 @@ sed -i -e 's@^.*export HADOOP_CONF_DIR@export HADOOP_CONF_DIR@' hadoop-env.sh
 
 cd /users/jason92/local
 sudo chmod -R 777 hadoop-3.3.6
+
+git config --global core.editor "vim"
