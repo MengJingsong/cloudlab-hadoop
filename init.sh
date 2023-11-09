@@ -82,4 +82,3 @@ cd /users/jason92/local
 sudo chmod -R 777 hadoop-3.3.6
 
 git config --global core.editor "vim"
-yes y | sudo ssh-keygen -t rsa -f /users/jason92/.ssh/id_rsa -N ''
