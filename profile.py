@@ -50,7 +50,7 @@ def Config( name, public, phystype, project_init):
     node.addService(RSpec.Install( SETUP, "/tmp"))
     node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh"))
     if project_init:
-	node.addService(RSpec.Execute( "sh", bash /local/repository/project_init.sh"))
+	node.addService(RSpec.Execute( "sh", "bash /local/repository/project_init.sh"))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
