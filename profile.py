@@ -36,7 +36,7 @@ lan = RSpec.LAN()
 lan.bandwidth = params.linkSpeed
 rspec.addResource( lan )
 
-def Config( name, public, phystype, project_init):
+def Config( name, public, phystype):
     if params.raw:
         node = RSpec.RawPC( name )
     else:
@@ -49,20 +49,18 @@ def Config( name, public, phystype, project_init):
     node.disk_image = IMAGE
     node.addService(RSpec.Install( SETUP, "/tmp"))
     node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh"))
-    if project_init:
-	node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/project_init.sh"))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True, params.server_phystype, False)
-Config("resourcemanager", True, params.server_phystype, False)
+Config("namenode", True, params.server_phystype)
+Config("resourcemanager", True, params.server_phystype)
 
 for i in range( params.n ):
-    Config("slave" + str( i ), False, params.server_phystype, False)
+    Config("slave" + str( i ), False, params.server_phystype)
 
 for i in range( params.m ):
-    Config("client" + str( i ), False, params.client_phystype, True)
+    Config("client" + str( i ), False, params.client_phystype)
 
 from lxml import etree as ET
 
