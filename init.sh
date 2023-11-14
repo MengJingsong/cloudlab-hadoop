@@ -1,5 +1,15 @@
 #!/bin/bash
 
+if test -b /dev/sdb && ! grep -q /dev/sdb /etc/fstab; then
+  mke2fs -F -j /dev/sdb
+  mount /dev/sdb /mnt
+  chmod 755 /mnt
+  echo "/dev/sdb      /mnt    ext3    defaults,nofail 0       2" >> /etc/fstab
+fi
+
+mkdir /mnt/hadoop
+chmod 1777 /mnt/hadoop
+
 sudo apt-get update
 sudo apt-get install -y openjdk-8-jdk
 
@@ -29,11 +39,11 @@ sed -i '/<configuration>/r core-site-customize' core-site.xml
 cat >> hdfs-site-customize << EOF
   <property>
     <name>dfs.namenode.name.dir</name>
-    <value>/users/jason92/hadoop/data/namenode</value>
+    <value>/mnt/hadoop</value>
   </property>
   <property>
-    <name>dfs.namenode.data.dir</name>
-    <value>/users/jason92/hadoop/data/datanode</value>
+    <name>dfs.datanode.data.dir</name>
+    <value>/mnt/hadoop</value>
   </property>
   <property>
     <name>dfs.namenode.http-address</name>
