@@ -33,18 +33,14 @@ cat >> core-site-customize << EOF
     <name>fs.defaultFS</name>
     <value>hdfs://namenode:9000</value>
   </property>
+  <property>
+    <name>hadoop.tmp.dir</name>
+    <value>/mnt/hadoop/hadoop-${USER}</value>
+  </property>
 EOF
 sed -i '/<configuration>/r core-site-customize' core-site.xml
 
 cat >> hdfs-site-customize << EOF
-  <property>
-    <name>dfs.namenode.name.dir</name>
-    <value>/mnt/hadoop</value>
-  </property>
-  <property>
-    <name>dfs.datanode.data.dir</name>
-    <value>/mnt/hadoop</value>
-  </property>
   <property>
     <name>dfs.namenode.http-address</name>
     <value>127.0.0.1:50070</value>
