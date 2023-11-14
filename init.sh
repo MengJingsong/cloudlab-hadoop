@@ -35,7 +35,7 @@ cat >> core-site-customize << EOF
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/mnt/hadoop/hadoop-${USER}</value>
+    <value>/mnt/hadoop/hadoop-jason92</value>
   </property>
 EOF
 sed -i '/<configuration>/r core-site-customize' core-site.xml
