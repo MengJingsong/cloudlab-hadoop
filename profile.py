@@ -19,7 +19,10 @@ pc.defineParameter( "mem", "Memory per VM",
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
                     
-pc.defineParameter( "server_phystype", "Optional physical node type for namenode, resourcemanager and datanode", portal.ParameterType.STRING, "", 
+pc.defineParameter( "namenode_phystype", "Optional physical node type for namenode", portal.ParameterType.STRING, "", 
+                    longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
+
+pc.defineParameter( "datanode_phystype", "Optional physical node type for namenode, resourcemanager and datanode", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
 pc.defineParameter( "client_phystype", "Optional physical node type for client", portal.ParameterType.STRING, "", 
@@ -54,11 +57,11 @@ def Config( name, public, phystype):
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True, params.server_phystype)
-Config("resourcemanager", True, params.server_phystype)
+Config("namenode", True, params.namenode_phystype)
+Config("resourcemanager", True, params.namenode_phystype)
 
 for i in range( params.n ):
-    Config("slave" + str( i ), False, params.server_phystype)
+    Config("slave" + str( i ), False, params.datanode_phystype)
 
 for i in range( params.m ):
     Config("client" + str( i ), False, params.client_phystype)
