@@ -12,6 +12,7 @@ chmod 1777 /mnt/hadoop
 
 sudo apt-get update
 sudo apt-get install -y openjdk-8-jdk
+sudo apt-get install htop
 
 mkdir /users/jason92/local
 mv /tmp/hadoop-3.3.6 /users/jason92/local
