@@ -14,7 +14,7 @@ pc.defineParameter( "raw", "Use physical nodes",
                     portal.ParameterType.BOOLEAN, False )
 
 pc.defineParameter( "mem", "Memory per VM",
-		    portal.ParameterType.INTEGER, 256 )
+		    portal.ParameterType.INTEGER, 1024 )
 		    
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
@@ -48,7 +48,8 @@ def Config( name, public, phystype):
         node.hardware_type = phystype
     node.disk_image = IMAGE
     node.addService(RSpec.Install( SETUP, "/tmp"))
-    node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh"))
+    if name == "namenode":
+    	node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh"))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
