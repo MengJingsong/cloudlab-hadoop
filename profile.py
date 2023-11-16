@@ -22,7 +22,7 @@ pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
 pc.defineParameter( "namenode_phystype", "Optional physical node type for namenode", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
-pc.defineParameter( "datanode_phystype", "Optional physical node type for namenode, resourcemanager and datanode", portal.ParameterType.STRING, "", 
+pc.defineParameter( "datanode_phystype", "Optional physical node type for datanode", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
 pc.defineParameter( "client_phystype", "Optional physical node type for client", portal.ParameterType.STRING, "", 
