@@ -31,7 +31,7 @@ pc.defineParameter( "client_phystype", "Optional physical node type for client",
 params = pc.bindParameters()
 
 IMAGE = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD"
-SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
+SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.0/hadoop-3.3.0.tar.gz"
 
 rspec = RSpec.Request()
 
@@ -68,7 +68,7 @@ for i in range( params.m ):
 from lxml import etree as ET
 
 tour = geni.rspec.igext.Tour()
-tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop 3.3.6. It includes a name node, a resource manager, and as many slaves as you choose." )
+tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop 3.3.0. It includes a name node, a resource manager, and as many slaves as you choose." )
 # tour.Instructions( geni.rspec.igext.Tour.MARKDOWN, "After your instance boots (approx. 5-10 minutes), you can log into the resource manager node and submit jobs.  [The HDFS web UI](http://{host-namenode}:50070/) and [the resource manager UI](http://{host-resourcemanager}:8088/) are running but enable NO authentication mechanism by default and therefore are NOT remotely accessible; please use secure channels (e.g., ssh port forwarding or turn on Hadoop Kerberos) if you need to access them." )
 rspec.addTour( tour )
 
