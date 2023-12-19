@@ -15,17 +15,17 @@ sudo apt-get install -y openjdk-8-jdk
 sudo apt-get install htop
 
 mkdir /users/jason92/local
-mv /tmp/hadoop-3.2.2 /users/jason92/local
+mv /tmp/hadoop-3.3.6 /users/jason92/local
 
 cat >> /users/jason92/.bashrc << EOF
-export HADOOP_HOME=/users/jason92/local/hadoop-3.2.2
+export HADOOP_HOME=/users/jason92/local/hadoop-3.3.6
 export PATH=\$PATH:\$HADOOP_HOME/bin:\$HADOOP_HOME/sbin
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
 EOF
 
 source /users/jason92/.bashrc
 
-cd /users/jason92/local/hadoop-3.2.2/etc/hadoop
+cd /users/jason92/local/hadoop-3.3.6/etc/hadoop
 
 grep -o -E 'slave[0-9]+$' /etc/hosts > workers
 
@@ -82,10 +82,10 @@ EOF
 sed -i '/<configuration>/r mapred-site-customize' mapred-site.xml
 
 sed -i -e 's@^.*export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' hadoop-env.sh
-sed -i -e 's@^.*export HADOOP_HOME.*@export HADOOP_HOME=/users/jason92/local/hadoop-3.2.2@' hadoop-env.sh
+sed -i -e 's@^.*export HADOOP_HOME.*@export HADOOP_HOME=/users/jason92/local/hadoop-3.3.6@' hadoop-env.sh
 sed -i -e 's@^.*export HADOOP_CONF_DIR@export HADOOP_CONF_DIR@' hadoop-env.sh
 
 cd /users/jason92/local
-sudo chmod -R 777 hadoop-3.2.2
+sudo chmod -R 777 hadoop-3.3.6
 
 git config --global core.editor "vim"
