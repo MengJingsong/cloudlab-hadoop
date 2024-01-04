@@ -4,7 +4,7 @@ import geni.rspec.igext
 
 pc = portal.Context()
 
-pc.defineParameter( "n", "Number of slave nodes",
+pc.defineParameter( "n", "Number of data nodes",
 		    portal.ParameterType.INTEGER, 3 )
 
 pc.defineParameter( "m", "Number of client nodes",
