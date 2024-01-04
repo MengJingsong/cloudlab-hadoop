@@ -18,6 +18,9 @@ pc.defineParameter( "mem", "Memory per VM",
 		    
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
+
+pc.defineParameter( "ver", "Hadoop version",
+		    portal.ParameterType.STRING, "3.3.6" )
                     
 pc.defineParameter( "namenode_phystype", "Optional physical node type for namenode", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
@@ -31,7 +34,8 @@ pc.defineParameter( "client_phystype", "Optional physical node type for client",
 params = pc.bindParameters()
 
 IMAGE = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD"
-SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
+# SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
+SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-{}/hadoop-{}.tar.gz".format(params.ver, params.ver)
 
 rspec = RSpec.Request()
 
@@ -68,7 +72,7 @@ for i in range( params.m ):
 from lxml import etree as ET
 
 tour = geni.rspec.igext.Tour()
-tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop 3.3.6. It includes a name node, a resource manager, and as many slaves as you choose." )
+tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop {}. It includes a name node, a resource manager, and as many slaves as you choose.".format(params.ver) )
 # tour.Instructions( geni.rspec.igext.Tour.MARKDOWN, "After your instance boots (approx. 5-10 minutes), you can log into the resource manager node and submit jobs.  [The HDFS web UI](http://{host-namenode}:50070/) and [the resource manager UI](http://{host-resourcemanager}:8088/) are running but enable NO authentication mechanism by default and therefore are NOT remotely accessible; please use secure channels (e.g., ssh port forwarding or turn on Hadoop Kerberos) if you need to access them." )
 rspec.addTour( tour )
 
