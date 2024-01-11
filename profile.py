@@ -10,11 +10,14 @@ pc.defineParameter( "n", "Number of data nodes",
 pc.defineParameter( "m", "Number of client nodes",
 		    portal.ParameterType.INTEGER, 2 )
 
-pc.defineParameter( "raw", "Use physical nodes",
+pc.defineParameter( "datanode_raw", "WHether use physical nodes for datanode",
                     portal.ParameterType.BOOLEAN, False )
 
 pc.defineParameter( "mem", "Memory per VM",
 		    portal.ParameterType.INTEGER, 1024 )
+
+pc.defineParameter( "cores", "CPU cores per VM",
+		    portal.ParameterType.INTEGER, 16 )
 		    
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
@@ -43,12 +46,14 @@ lan = RSpec.LAN()
 lan.bandwidth = params.linkSpeed
 rspec.addResource( lan )
 
-def Config( name, public, phystype):
-    if params.raw:
+def Config( name, public, phystype, raw):
+    if raw:
         node = RSpec.RawPC( name )
     else:
         node = geni.rspec.igext.XenVM( name )
         node.ram = params.mem
+	node.cores = params.cores
+	node.exclusive = True
         if public:
             node.routable_control_ip = True
     if phystype != "":
@@ -60,14 +65,14 @@ def Config( name, public, phystype):
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True, params.namenode_phystype)
-Config("resourcemanager", True, params.namenode_phystype)
+Config("namenode", True, params.namenode_phystype, True)
+Config("resourcemanager", True, params.namenode_phystype, True)
 
 for i in range( params.n ):
-    Config("slave" + str( i ), False, params.datanode_phystype)
+    Config("slave" + str( i ), False, params.datanode_phystype, params.datanode_raw)
 
 for i in range( params.m ):
-    Config("client" + str( i ), False, params.client_phystype)
+    Config("client" + str( i ), False, params.client_phystype, True)
 
 from lxml import etree as ET
 
