@@ -54,8 +54,8 @@ def Config( name, public, phystype, raw):
         node.ram = params.mem
         node.cores = params.cores
         node.exclusive = True
-    if public:
-        node.routable_control_ip = True
+        if public:
+            node.routable_control_ip = True
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
