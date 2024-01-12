@@ -51,12 +51,11 @@ def Config( name, public, phystype, raw):
         node = RSpec.RawPC( name )
     else:
         node = geni.rspec.igext.XenVM( name )
-        # node = RSpec.XenVM(name)
-	node.ram = params.mem
-	node.cores = params.cores
-	node.exclusive = True
-        if public:
-            node.routable_control_ip = True
+        node.ram = params.mem
+	    node.cores = params.cores
+	    node.exclusive = True
+    if public:
+        node.routable_control_ip = True
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
