@@ -60,7 +60,8 @@ def Config( name, public, phystype, raw):
         node.hardware_type = phystype
     node.disk_image = IMAGE
     node.addService(RSpec.Install( SETUP, "/tmp"))
-    node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
+	if raw:
+    	node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
