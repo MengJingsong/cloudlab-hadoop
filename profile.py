@@ -67,14 +67,14 @@ def Config( name, public, phystype, raw):
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True, params.namenode_phystype, True)
-Config("resourcemanager", True, params.namenode_phystype, True)
+# Config("namenode", True, params.namenode_phystype, True)
+# Config("resourcemanager", True, params.namenode_phystype, True)
 
 for i in range( params.n ):
     Config("slave" + str( i ), False, params.datanode_phystype, params.datanode_raw)
 
-for i in range( params.m ):
-    Config("client" + str( i ), False, params.client_phystype, True)
+# for i in range( params.m ):
+    # Config("client" + str( i ), False, params.client_phystype, True)
 
 from lxml import etree as ET
 
