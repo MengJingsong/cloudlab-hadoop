@@ -50,8 +50,9 @@ def Config( name, public, phystype, raw):
     if raw:
         node = RSpec.RawPC( name )
     else:
-        node = geni.rspec.igext.XenVM( name )
-        node.ram = params.mem
+        # node = geni.rspec.igext.XenVM( name )
+        node = RSpec.XenVM(name)
+	node.ram = params.mem
 	node.cores = params.cores
 	node.exclusive = True
         if public:
