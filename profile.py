@@ -52,8 +52,8 @@ def Config( name, public, phystype, raw):
     else:
         node = geni.rspec.igext.XenVM( name )
         node.ram = params.mem
-	    node.cores = params.cores
-	    node.exclusive = True
+        node.cores = params.cores
+        node.exclusive = True
     if public:
         node.routable_control_ip = True
     if phystype != "":
