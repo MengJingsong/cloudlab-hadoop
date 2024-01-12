@@ -10,7 +10,7 @@ pc.defineParameter( "n", "Number of data nodes",
 pc.defineParameter( "m", "Number of client nodes",
 		    portal.ParameterType.INTEGER, 2 )
 
-pc.defineParameter( "datanode_raw", "WHether use physical nodes for datanode",
+pc.defineParameter( "datanode_raw", "Whether use physical nodes for datanode",
                     portal.ParameterType.BOOLEAN, False )
 
 pc.defineParameter( "mem", "Memory per VM",
