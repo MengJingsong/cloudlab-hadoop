@@ -61,7 +61,7 @@ def Config( name, public, phystype, raw):
     node.disk_image = IMAGE
     node.addService(RSpec.Install( SETUP, "/tmp"))
 	if raw:
-    		node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
+		node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
