@@ -25,13 +25,13 @@ pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
 pc.defineParameter( "ver", "Hadoop version",
 		    portal.ParameterType.STRING, "3.3.6" )
                     
-pc.defineParameter( "namenode_phystype", "Optional physical node type for namenode", portal.ParameterType.STRING, "", 
+pc.defineParameter( "namenode_phystype", "Node type for namenode", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
-pc.defineParameter( "datanode_phystype", "Optional physical node type for datanode", portal.ParameterType.STRING, "", 
+pc.defineParameter( "datanode_phystype", "Node type for datanode", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
-pc.defineParameter( "client_phystype", "Optional physical node type for client", portal.ParameterType.STRING, "", 
+pc.defineParameter( "client_phystype", "Node type for client", portal.ParameterType.STRING, "", 
                     longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
 
 params = pc.bindParameters()
@@ -59,18 +59,22 @@ def Config( name, public, phystype, raw):
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
-    if raw:
-        node.addService(RSpec.Install( SETUP, "/tmp"))
-        node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
+    # if raw:
+    # node.addService(RSpec.Install( SETUP, "/tmp"))
+    # node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True, params.namenode_phystype, True)
-Config("resourcemanager", True, params.namenode_phystype, True)
+Config("nn0", True, params.namenode_phystype, True)
+Config("nn1", True, params.namenode_phystype, True)
+Config("jn0", True, params.namenode_phystype, True)
+Config("jn1", True, params.namenode_phystype, True)
+Config("jn2", True, params.namenode_phystype, True)
+# Config("resourcemanager", True, params.namenode_phystype, True)
 
 for i in range( params.n ):
-    Config("slave" + str( i ), False, params.datanode_phystype, params.datanode_raw)
+    Config("worker" + str( i ), False, params.datanode_phystype, params.datanode_raw)
 
 for i in range( params.m ):
     Config("client" + str( i ), False, params.client_phystype, True)
@@ -78,7 +82,7 @@ for i in range( params.m ):
 from lxml import etree as ET
 
 tour = geni.rspec.igext.Tour()
-tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop {}. It includes a name node, a resource manager, and as many slaves/clients as you choose.".format(params.ver) )
+tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop {}. It includes a name node, a resource manager, and as many workers/clients as you choose.".format(params.ver) )
 # tour.Instructions( geni.rspec.igext.Tour.MARKDOWN, "After your instance boots (approx. 5-10 minutes), you can log into the resource manager node and submit jobs.  [The HDFS web UI](http://{host-namenode}:50070/) and [the resource manager UI](http://{host-resourcemanager}:8088/) are running but enable NO authentication mechanism by default and therefore are NOT remotely accessible; please use secure channels (e.g., ssh port forwarding or turn on Hadoop Kerberos) if you need to access them." )
 rspec.addTour( tour )
 
