@@ -68,6 +68,7 @@ def Config( name, public, phystype, raw):
 
 Config("namenode0", True, params.namenode_phystype, True)
 Config("namenode1", True, params.namenode_phystype, True)
+Config("journalnode", True, params.namenode_phystype, True)
 Config("resourcemanager", True, params.namenode_phystype, True)
 
 for i in range( params.n ):
