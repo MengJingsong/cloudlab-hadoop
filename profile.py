@@ -59,14 +59,15 @@ def Config( name, public, phystype, raw):
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
-    if raw:
-        node.addService(RSpec.Install( SETUP, "/tmp"))
-        node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
+    # if raw:
+    node.addService(RSpec.Install( SETUP, "/tmp"))
+    node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
 
-Config("namenode", True, params.namenode_phystype, True)
+Config("namenode0", True, params.namenode_phystype, True)
+Config("namenode1", True, params.namenode_phystype, True)
 Config("resourcemanager", True, params.namenode_phystype, True)
 
 for i in range( params.n ):
