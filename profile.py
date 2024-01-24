@@ -56,17 +56,13 @@ def configNode(name, public, raw, phystype):
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
-    iface = node.addInterface("if0")
-    lan.addInterface(iface)
-    rspec.addResource(node)
-
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     node.addService(RSpec.Install(HADOOP, "/tmp"))
-    # if params.ha:
-    #     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config.sh {}".format(params.hadoop_ver)))
-    # else:
-    #     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/config.sh {}".format(params.hadoop_ver)))
-    # nodes.append(node)
+    if params.ha:
+        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config.sh {}".format(params.hadoop_ver)))
+    else:
+        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/config.sh {}".format(params.hadoop_ver)))
+    nodes.append(node)
     return node
     
 
