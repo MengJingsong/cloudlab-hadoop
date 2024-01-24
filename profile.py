@@ -68,7 +68,7 @@ for i in range(params.num_nns):
     node = configNode("nn" + str(i + 1), True, params.raw, params.phystype)
 
 # config journalnodes
-for i in range(params.nums_jns):
+for i in range(params.num_jns):
     node = configNode("jn" + str(i + 1), True, params.raw, params.phystype)
 
 # config resourcemanager
