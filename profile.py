@@ -56,7 +56,7 @@ def configNode(name, public, raw, phystype):
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
-	iface = node.addInterface("if0")
+    iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
 
