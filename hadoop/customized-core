@@ -1,12 +1,8 @@
   <property>
     <name>fs.defaultFS</name>
-    <value>hdfs://ha-cluster</value>
+    <value>hdfs://namenode:9000</value>
   </property>
   <property>
     <name>hadoop.tmp.dir</name>
-    <value>/users/jason92/ha</value>
-  </property>
-  <property>
-    <name>dfs.journalnode.edits.dir</name>
-    <value>/users/jason92/ha/data/jn</value>
+    <value>/users/jason92/hadoop</value>
   </property>
