@@ -16,7 +16,7 @@ pc.defineParameter("raw", "Use physical nodes", portal.ParameterType.BOOLEAN, Tr
 
 pc.defineParameter("phystype", "Node type for all nodes", portal.ParameterType.STRING, "")
 		    
-pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
+pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 10000000,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
 
 # advanced settings
