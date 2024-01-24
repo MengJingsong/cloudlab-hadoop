@@ -59,6 +59,7 @@ def configNode(name, public, raw, phystype):
 	iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
+
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     node.addService(RSpec.Install(HADOOP, "/tmp"))
     # if params.ha:
