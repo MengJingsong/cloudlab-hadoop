@@ -1,6 +1,6 @@
   <property>
-    <name>dfs.namenode.name.dir</name>
-    <value>/users/jason92/ha/data/namenode</value>
+    <name>dfs.journalnode.edits.dir</name>
+    <value>/users/jason92/ha/dfs/journalnode</value>
   </property>
   <property>
     <name>dfs.replication</name>
