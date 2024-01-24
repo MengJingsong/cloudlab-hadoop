@@ -4,53 +4,49 @@ import geni.rspec.igext
 
 pc = portal.Context()
 
-pc.defineParameter( "n", "Number of data nodes",
-		    portal.ParameterType.INTEGER, 3 )
+pc.defineParameter("hadoop_ver", "Hadoop version", portal.ParameterType.STRING, "3.3.6")
 
-pc.defineParameter( "m", "Number of client nodes",
-		    portal.ParameterType.INTEGER, 2 )
+pc.defineParameter("ha", "whether use HA mode", portal.ParameterType.BOOLEAN, False)
 
-pc.defineParameter( "datanode_raw", "Whether use physical nodes for datanode",
-                    portal.ParameterType.BOOLEAN, False )
+pc.defineParameter("num_dns", "Number of datanodes", portal.ParameterType.INTEGER, 3)
 
-pc.defineParameter( "mem", "Memory per VM",
-		    portal.ParameterType.INTEGER, 1024 )
+pc.defineParameter("num_clients", "Number of client nodes", portal.ParameterType.INTEGER, 2)
 
-pc.defineParameter( "cores", "CPU cores per VM",
-		    portal.ParameterType.INTEGER, 16 )
+pc.defineParameter("raw", "Use physical nodes", portal.ParameterType.BOOLEAN, True)
+
+pc.defineParameter("phystype", "Node type for all nodes", portal.ParameterType.STRING, "")
 		    
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 0,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
 
-pc.defineParameter( "ver", "Hadoop version",
-		    portal.ParameterType.STRING, "3.3.6" )
-                    
-pc.defineParameter( "namenode_phystype", "Node type for namenode", portal.ParameterType.STRING, "", 
-                    longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
+# advanced settings
 
-pc.defineParameter( "datanode_phystype", "Node type for datanode", portal.ParameterType.STRING, "", 
-                    longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
+pc.defineParameter("num_nns", "Number of namenodes", portal.ParameterType.INTEGER, 1, advanced=True)
 
-pc.defineParameter( "client_phystype", "Node type for client", portal.ParameterType.STRING, "", 
-                    longDescription="Specify a single physical node type (pc3000, d710, etc) instead of letting the resource mapper choose for you")
+pc.defineParameter("num_jns", "Number of journalnodes", portal.ParameterType.INTEGER, 0, advanced=True)
+
+pc.defineParameter("enable_rm", "Whether enable resourcemanager", portal.ParameterType.BOOLEAN, False, advanced=True)
+
+pc.defineParameter("mem", "Memory per VM", portal.ParameterType.INTEGER, 1024, advanced=True)
+
+pc.defineParameter("cores", "CPU cores per VM", portal.ParameterType.INTEGER, 16, advanced=True)
 
 params = pc.bindParameters()
+rspec = RSpec.Request()
+lan = RSpec.LAN()
+lan.bandwidth = params.linkSpeed
+rspec.addResource(lan)
+nodes = []
 
 IMAGE = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD"
 # SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
-SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-{}/hadoop-{}.tar.gz".format(params.ver, params.ver)
+HADOOP = "https://archive.apache.org/dist/hadoop/core/hadoop-{}/hadoop-{}.tar.gz".format(params.ver, params.ver)
 
-rspec = RSpec.Request()
-
-lan = RSpec.LAN()
-lan.bandwidth = params.linkSpeed
-rspec.addResource( lan )
-
-def Config( name, public, phystype, raw):
+def configNode(name, public, raw, phystype):
     if raw:
-        node = RSpec.RawPC( name )
+        node = RSpec.RawPC(name)
     else:
-        node = geni.rspec.igext.XenVM( name )
+        node = geni.rspec.igext.XenVM(name)
         node.ram = params.mem
         node.cores = params.cores
         node.exclusive = True
@@ -59,31 +55,44 @@ def Config( name, public, phystype, raw):
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
+    nodes.append(node)
+    return node
+    
+
     # if raw:
-    # node.addService(RSpec.Install( SETUP, "/tmp"))
-    # node.addService(RSpec.Execute( "sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
+    # node.addService(RSpec.Install(HADOOP, "/tmp"))
+    # node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
+
+# config namenodes
+for i in range(params.num_nns):
+    node = configNode("nn" + str(i + 1), True, params.raw, params.phystype)
+
+# config journalnodes
+for i in range(params.nums_jns):
+    node = configNode("jn" + str(i + 1), True, params.raw, params.phystype)
+
+# config resourcemanager
+if params.enable_rm:
+    node = configNode("rm", True, params.raw, params.phystype)
+
+# config datanodes
+for i in range(params.num_dns):
+    node = configNode("dn" + str(i + 1), False, params.raw, params.phystype)
+
+# config client nodes
+for i in range(params.num_clients):
+    node = configNode("client" + str(i + 1), False, params.raw, params.phystype)
+
+# finalize
+for node in nodes:
     iface = node.addInterface("if0")
     lan.addInterface(iface)
     rspec.addResource(node)
-
-Config("nn1", True, params.namenode_phystype, True)
-Config("nn2", True, params.namenode_phystype, True)
-Config("jn1", True, params.namenode_phystype, True)
-Config("jn2", True, params.namenode_phystype, True)
-Config("jn3", True, params.namenode_phystype, True)
-# Config("resourcemanager", True, params.namenode_phystype, True)
-
-for i in range( params.n ):
-    Config("worker" + str( i + 1), False, params.datanode_phystype, params.datanode_raw)
-
-for i in range( params.m ):
-    Config("client" + str( i + 1), False, params.client_phystype, True)
 
 from lxml import etree as ET
 
 tour = geni.rspec.igext.Tour()
 tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop {}. It includes a name node, a resource manager, and as many workers/clients as you choose.".format(params.ver) )
-# tour.Instructions( geni.rspec.igext.Tour.MARKDOWN, "After your instance boots (approx. 5-10 minutes), you can log into the resource manager node and submit jobs.  [The HDFS web UI](http://{host-namenode}:50070/) and [the resource manager UI](http://{host-resourcemanager}:8088/) are running but enable NO authentication mechanism by default and therefore are NOT remotely accessible; please use secure channels (e.g., ssh port forwarding or turn on Hadoop Kerberos) if you need to access them." )
 rspec.addTour( tour )
 
 pc.printRequestRSpec( rspec )
