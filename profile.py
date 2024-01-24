@@ -42,6 +42,7 @@ IMAGE = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD"
 # SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
 HADOOP = "https://archive.apache.org/dist/hadoop/core/hadoop-{}/hadoop-{}.tar.gz".format(params.hadoop_ver, params.hadoop_ver)
 
+
 def configNode(name, public, raw, phystype):
     if raw:
         node = RSpec.RawPC(name)
@@ -55,19 +56,18 @@ def configNode(name, public, raw, phystype):
     if phystype != "":
         node.hardware_type = phystype
     node.disk_image = IMAGE
+	iface = node.addInterface("if0")
+    lan.addInterface(iface)
+    rspec.addResource(node)
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     node.addService(RSpec.Install(HADOOP, "/tmp"))
     # if params.ha:
     #     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config.sh {}".format(params.hadoop_ver)))
     # else:
     #     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/config.sh {}".format(params.hadoop_ver)))
-    nodes.append(node)
+    # nodes.append(node)
     return node
     
-
-    # if raw:
-    # node.addService(RSpec.Install(HADOOP, "/tmp"))
-    # node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh {}".format(params.ver)))
 
 # config namenodes
 for i in range(params.num_nns):
