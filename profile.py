@@ -92,7 +92,7 @@ for node in nodes:
 from lxml import etree as ET
 
 tour = geni.rspec.igext.Tour()
-tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster will run Hadoop {}. It includes a name node, a resource manager, and as many workers/clients as you choose.".format(params.ver) )
+tour.Description( geni.rspec.igext.Tour.TEXT, "A cluster with hadoop deployed")
 rspec.addTour( tour )
 
 pc.printRequestRSpec( rspec )
