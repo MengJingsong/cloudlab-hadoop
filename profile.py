@@ -21,11 +21,11 @@ pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 100
 
 # advanced settings
 
-pc.defineParameter("num_nns", "Number of namenodes", portal.ParameterType.INTEGER, 1, advanced=True)
+# pc.defineParameter("num_nns", "Number of namenodes", portal.ParameterType.INTEGER, 1, advanced=True)
 
-pc.defineParameter("num_jns", "Number of journalnodes", portal.ParameterType.INTEGER, 0, advanced=True)
+# pc.defineParameter("num_jns", "Number of journalnodes", portal.ParameterType.INTEGER, 0, advanced=True)
 
-pc.defineParameter("enable_rm", "Whether enable resourcemanager", portal.ParameterType.BOOLEAN, False, advanced=True)
+# pc.defineParameter("enable_rm", "Whether enable resourcemanager", portal.ParameterType.BOOLEAN, False, advanced=True)
 
 pc.defineParameter("mem", "Memory per VM", portal.ParameterType.INTEGER, 1024, advanced=True)
 
@@ -65,19 +65,25 @@ def configNode(name, public, raw, phystype):
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     nodes.append(node)
     return node
-    
+
+if params.ha:
+    num_nns = 2
+    num_jns = 3
+else:
+    num_nns = 1
+    num_jns = 0
 
 # config namenodes
-for i in range(params.num_nns):
+for i in range(num_nns):
     node = configNode("nn" + str(i + 1), True, params.raw, params.phystype)
 
 # config journalnodes
-for i in range(params.num_jns):
+for i in range(num_jns):
     node = configNode("jn" + str(i + 1), True, params.raw, params.phystype)
 
 # config resourcemanager
-if params.enable_rm:
-    node = configNode("rm", True, params.raw, params.phystype)
+# if params.enable_rm:
+#     node = configNode("rm", True, params.raw, params.phystype)
 
 # config datanodes
 for i in range(params.num_dns):
