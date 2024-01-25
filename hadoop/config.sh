@@ -17,9 +17,13 @@ cd /users/jason92/hadoop-$1/etc/hadoop
 
 grep -o -E 'dn[0-9]+$' /etc/hosts > workers
 
-sed -i '/<configuration>/r /local/repository/hadoop/customized-core' core-site.xml
-sed -i '/<configuration>/r /local/repository/hadoop/customized-hdfs' hdfs-site.xml
-sed -i '/<configuration>/r /local/repository/hadoop/customized-yarn' yarn-site.xml
+cp /local/repository/hadoop/customized-core ./
+cp /local/repository/hadoop/customized-hdfs ./
+cp /local/repository/hadoop/customized-yarn ./
+
+sed -i '/<configuration>/r customized-core' core-site.xml
+sed -i '/<configuration>/r customized-hdfs' hdfs-site.xml
+sed -i '/<configuration>/r customized-yarn' yarn-site.xml
 
 sed -i -e 's@^.*export JAVA_HOME.*@export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64@' hadoop-env.sh
 sed -i -e 's@^.*export HADOOP_HOME.*@export HADOOP_HOME=/users/jason92/local/hadoop-'$1'@' hadoop-env.sh
