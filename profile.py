@@ -41,6 +41,7 @@ nodes = []
 IMAGE = "urn:publicid:IDN+emulab.net+image+emulab-ops//UBUNTU22-64-STD"
 # SETUP = "https://archive.apache.org/dist/hadoop/core/hadoop-3.3.6/hadoop-3.3.6.tar.gz"
 HADOOP = "https://archive.apache.org/dist/hadoop/core/hadoop-{}/hadoop-{}.tar.gz".format(params.hadoop_ver, params.hadoop_ver)
+ZOOKEEPER = "https://dlcdn.apache.org/zookeeper/zookeeper-3.9.1/apache-zookeeper-3.9.1-bin.tar.gz"
 
 
 def configNode(name, public, raw, phystype):
@@ -76,10 +77,16 @@ else:
 # config namenodes
 for i in range(num_nns):
     node = configNode("nn" + str(i + 1), True, params.raw, params.phystype)
+    if params.ha:
+        node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
+        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh"))
 
 # config journalnodes
 for i in range(num_jns):
     node = configNode("jn" + str(i + 1), True, params.raw, params.phystype)
+    if params.ha:
+        node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
+        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh"))
 
 # config resourcemanager
 # if params.enable_rm:
