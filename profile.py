@@ -59,7 +59,7 @@ def configNode(name, public, raw, phystype):
     # node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     node.addService(RSpec.Install(HADOOP, "/tmp"))
     if params.ha:
-        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config.sh {}".format(params.hadoop_ver)))
+        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_hadoop.sh {}".format(params.hadoop_ver)))
     else:
         node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/config.sh {}".format(params.hadoop_ver)))
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
