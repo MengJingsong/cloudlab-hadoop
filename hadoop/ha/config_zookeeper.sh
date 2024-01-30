@@ -23,3 +23,7 @@ cd /users/jason92/zookeeper
 cat >> myid << EOF
 $1
 EOF
+
+cd /users/jason92
+sudo chmod -R 777 apache-zookeeper-3.9.1-bin
+sudo chmod -R 777 zookeeper
