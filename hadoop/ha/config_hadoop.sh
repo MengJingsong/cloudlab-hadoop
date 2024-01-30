@@ -15,8 +15,7 @@ export HADOOP_MAPRED_HOME=$HADOOP_HOME
 export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export ZOOKEEPER_HOME=/users/jason92/apache-zookeeper-3.9.1-bin
-export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin:$ZOOKEEPER_HOME/bin
+export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin
 EOF
 
 source /users/jason92/.bashrc
