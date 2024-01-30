@@ -7,15 +7,15 @@ sudo apt-get install -y openjdk-8-jdk
 
 cat >> /users/jason92/.bashrc << EOF
 export HADOOP_HOME=/users/jason92/hadoop-$1
-export YARN_HOME=$HADOOP_HOME
-export HADOOP_COMMON_HOME=$HADOOP_HOME
-export HADOOP_HDFS_HOME=$HADOOP_HOME
-export HADOOP_YARN_HOME=$HADOOP_HOME
-export HADOOP_MAPRED_HOME=$HADOOP_HOME
-export HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
-export YARN_CONF_DIR=$HADOOP_HOME/etc/hadoop
+export YARN_HOME=\$HADOOP_HOME
+export HADOOP_COMMON_HOME=\$HADOOP_HOME
+export HADOOP_HDFS_HOME=\$HADOOP_HOME
+export HADOOP_YARN_HOME=\$HADOOP_HOME
+export HADOOP_MAPRED_HOME=\$HADOOP_HOME
+export HADOOP_CONF_DIR=\$HADOOP_HOME/etc/hadoop
+export YARN_CONF_DIR=\$HADOOP_HOME/etc/hadoop
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk-amd64
-export PATH=$PATH:$HADOOP_HOME/bin:$HADOOP_HOME/sbin:$JAVA_HOME/bin
+export PATH=\$PATH:\$HADOOP_HOME/bin:\$HADOOP_HOME/sbin:\$JAVA_HOME/bin
 
 EOF
 
