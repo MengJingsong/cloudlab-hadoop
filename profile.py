@@ -77,16 +77,16 @@ else:
 # config namenodes
 for i in range(num_nns):
     node = configNode("nn" + str(i + 1), True, params.raw, params.phystype)
-    if params.ha:
-        node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
-        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh"))
+    # if params.ha:
+    #     node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
+    #     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh"))
 
 # config journalnodes
 for i in range(num_jns):
     node = configNode("jn" + str(i + 1), True, params.raw, params.phystype)
     if params.ha:
         node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
-        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh"))
+        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh {}".format(i)))
 
 # config resourcemanager
 # if params.enable_rm:
