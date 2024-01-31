@@ -23,6 +23,7 @@ source /users/jason92/.bashrc
 cd /users/jason92/hadoop-$1/etc/hadoop
 
 grep -o -E 'dn[0-9]+$' /etc/hosts > workers
+grep -o -E 'dn[0-9]+$' /etc/hosts > slaves
 
 cp /local/repository/hadoop/ha/customized-core ./
 cp /local/repository/hadoop/ha/customized-hdfs ./
