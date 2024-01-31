@@ -13,3 +13,5 @@
 sudo apt-get install htop
 
 git config --global core.editor "vim"
+git config --global user.email "mengjs.92@gmail.com"
+git config --global user.name "JingsongMeng"
