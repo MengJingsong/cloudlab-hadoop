@@ -19,13 +19,9 @@ pc.defineParameter("phystype", "Node type for all nodes", portal.ParameterType.S
 pc.defineParameter( "linkSpeed", "Link Speed", portal.ParameterType.INTEGER, 10000000,
                     [(0,"Any"), (100000, "100Mb/s"), (1000000, "1Gb/s"), (10000000, "10Gb/s"), (25000000, "25Gb/s"), (100000000, "100Gb/s")])
 
+pc.defineParameter("cfg", "Auto config", portal.ParameterType.BOOLEAN, True)
+
 # advanced settings
-
-# pc.defineParameter("num_nns", "Number of namenodes", portal.ParameterType.INTEGER, 1, advanced=True)
-
-# pc.defineParameter("num_jns", "Number of journalnodes", portal.ParameterType.INTEGER, 0, advanced=True)
-
-# pc.defineParameter("enable_rm", "Whether enable resourcemanager", portal.ParameterType.BOOLEAN, False, advanced=True)
 
 pc.defineParameter("mem", "Memory per VM", portal.ParameterType.INTEGER, 1024, advanced=True)
 
@@ -58,11 +54,17 @@ def configNode(name, public, raw, phystype):
         node.hardware_type = phystype
     node.disk_image = IMAGE
     # node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
-    node.addService(RSpec.Install(HADOOP, "/tmp"))
+    node.addService(RSpec.Install(HADOOP, "/users/jason92/"))
     if params.ha:
-        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_hadoop.sh {}".format(params.hadoop_ver)))
+        if params.cfg:
+            node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_hadoop.sh {}".format(params.hadoop_ver)))
+        else:
+            node.addService(RSpec.Execute("sh", "sudo cp /local/repository/hadoop/ha/config_hadoop.sh /users/jason92/"))
     else:
-        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/config.sh {}".format(params.hadoop_ver)))
+        if params.cfg:
+            node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/config.sh {}".format(params.hadoop_ver)))
+        else:
+            node.addService(RSpec.Execute("sh", "sudo cp /local/repository/hadoop/config.sh /users/jason92"))
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     nodes.append(node)
     return node
@@ -77,20 +79,17 @@ else:
 # config namenodes
 for i in range(num_nns):
     node = configNode("nn" + str(i + 1), True, params.raw, params.phystype)
-    # if params.ha:
-    #     node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
-    #     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh"))
 
 # config journalnodes
 for i in range(num_jns):
     node = configNode("jn" + str(i + 1), True, params.raw, params.phystype)
     if params.ha:
-        node.addService(RSpec.Install(ZOOKEEPER, "/tmp"))
-        node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh {}".format(i + 1)))
+        node.addService(RSpec.Install(ZOOKEEPER, "/users/jason92"))
+        if params.cfg:
+            node.addService(RSpec.Execute("sh", "sudo bash /local/repository/hadoop/ha/config_zookeeper.sh {}".format(i + 1)))
+        else:
+            node.addService(RSpec.Execute("sh", "sudo cp /local/repository/hadoop/ha/config_zookeeper.sh /users/jason92"))
 
-# config resourcemanager
-# if params.enable_rm:
-#     node = configNode("rm", True, params.raw, params.phystype)
 
 # config datanodes
 for i in range(params.num_dns):
