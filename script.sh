@@ -22,16 +22,15 @@ KEYS_FILE="all_keys"
 # Read the file line by line
 while IFS= read -r line
 do
-    echo "connecting to $line"
+    ssh-keyscan -H "$line" >> ~/.ssh/known_hosts
     ssh -n "$line" "$REMOTE_COMMAND" </dev/null
     ssh -n "$line" 'cat ~/.ssh/id_rsa.pub' >> "$KEYS_FILE"
-    # scp -q "$line:/.ssh/id_rsa.pub" .
-    # cat id_rsa.pub >> "$KEYS_FILE"
-    echo "connecting to $line finished"
 done < "$FILENAME"
 
 while IFS= read -r line
 do
-    scp "$KEYS_FILE" "$line:/users/jason92/$KEYS_FILE"
+    scp "$KEYS_FILE" "$line:/users/jason92/$KEYS_FILE" >/dev/null
     ssh -n "$line" "cat /users/jason92/$KEYS_FILE >> /users/jason92/.ssh/authorized_keys;rm /users/jason92/$KEYS_FILE"
 done < "$FILENAME"
+
+rm $KEYS_FILE
