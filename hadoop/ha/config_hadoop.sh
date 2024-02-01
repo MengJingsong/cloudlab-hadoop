@@ -1,6 +1,6 @@
 #!/bin/bash
 
-mv /tmp/hadoop-$1 /users/jason92
+# mv /tmp/hadoop-$1 /users/jason92
 
 sudo apt-get update
 sudo apt-get install -y openjdk-8-jdk
