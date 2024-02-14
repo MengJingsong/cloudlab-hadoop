@@ -1,4 +1,4 @@
-git clone --branch ssh 
+git clone --branch ssh https://github.com/MengJingsong/cloudlab-hadoop.git
 
 designed to distribut SSH to each CloudLab node
 
