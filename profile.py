@@ -66,6 +66,7 @@ def configNode(name, public, raw, phystype):
         else:
             node.addService(RSpec.Execute("sh", "sudo cp /local/repository/hadoop/config.sh /users/jason92"))
     node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
+    node.addService(RSpec.Execute("sh", "sudo bash /local/repository/init.sh"))
     nodes.append(node)
     return node
 
