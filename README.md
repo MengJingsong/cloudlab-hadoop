@@ -1,4 +1,6 @@
-Designed to distribut SSH to each CloudLab node
+git clone --branch ssh 
+
+designed to distribut SSH to each CloudLab node
 
 put all CloudLab hostname to a file (remote)
 
